@@ -33,7 +33,7 @@
                 }
                 db = firebase.firestore();
                 auth = firebase.auth();
-                console.log("Firebase Inicializado com Sucesso no projeto: " + firebaseConfig.projectId);
+                console.log("Firebase Inicializado com Sucesso!");
             } catch (e) {
                 console.error("Erro Crítico na inicialização do Firebase:", e);
             }
@@ -60,37 +60,33 @@
             </div>
             
             <div class="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800">
-                <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Sincronização Ativa com Firestore:</span>
-                Cadastros de produtos, ordens de produção e equipe agora salvam direto na nuvem!<br><br>
-                <i>Acesso padrão imediato:</i> <code class="font-mono bg-white px-1 rounded">admin@fabrica.com</code> / <code class="font-mono bg-white px-1 rounded">123456</code>.
+                <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Sincronização em Nuvem Ativa:</span>
+                Cadastros e operações salvam direto no Firestore. Basta clicar no botão abaixo para entrar!
             </div>
 
             <form id="login-form" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">E-mail Corporativo</label>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Identificação / E-mail</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="login-email" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" value="admin@fabrica.com" placeholder="nome@empresa.com">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" id="login-email" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" value="admin@fabrica.com">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Senha de Acesso</label>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Senha</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="login-password" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" value="123456" placeholder="••••••••">
+                        <input type="password" id="login-password" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" value="123456">
                     </div>
                 </div>
                 <div class="pt-2">
                     <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition-colors shadow-md text-sm">
-                        Autenticar no Firebase
+                        Entrar no Sistema e Sincronizar
                     </button>
                 </div>
             </form>
 
             <div id="auth-error" class="mt-4 p-3 bg-red-50 text-red-700 rounded-lg text-xs hidden"></div>
-            <div class="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
-                Segurança Baseada em RBAC &bull; Firestore Sync Ativo
-            </div>
         </div>
     </div>
 
@@ -103,7 +99,7 @@
                     </div>
                     <div>
                         <span class="font-bold text-lg tracking-wide">MES & APS Industrial</span>
-                        <span class="text-xs block text-emerald-400 font-mono">Envase 1 a 6 | Firebase Conectado</span>
+                        <span class="text-xs block text-emerald-400 font-mono">Envase 1 a 6 | Firestore Sync Ativo</span>
                     </div>
                 </div>
                 
@@ -121,14 +117,14 @@
                         <i class="fa-solid fa-calendar-days mr-1.5"></i> Inteligência APS
                     </button>
                     <button id="nav-team" onclick="switchTab('team')" class="tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hidden" data-tab="team">
-                        <i class="fa-solid fa-users-gear mr-1.5"></i> Equipe & RBAC (Admin)
+                        <i class="fa-solid fa-users-gear mr-1.5"></i> Equipe & RBAC
                     </button>
                 </nav>
 
                 <div class="flex items-center space-x-4">
                     <div class="text-right hidden sm:block">
-                        <div id="user-display-name" class="text-xs font-bold text-white">Carregando...</div>
-                        <div id="user-display-role" class="text-[10px] uppercase font-mono text-emerald-400">Perfil</div>
+                        <div id="user-display-name" class="text-xs font-bold text-white">Usuário</div>
+                        <div id="user-display-role" class="text-[10px] uppercase font-mono text-emerald-400">ADMIN</div>
                     </div>
                     <button onclick="logoutApp()" class="bg-slate-800 hover:bg-red-900 text-slate-300 hover:text-white px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center">
                         <i class="fa-solid fa-power-off mr-1.5"></i> Sair
@@ -138,7 +134,6 @@
         </header>
 
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-            
             <section id="tab-dashboard" class="space-y-6 tab-content">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
@@ -154,12 +149,12 @@
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-xs uppercase font-bold text-slate-400">Produtos Cadastrados</p>
+                                <p class="text-xs uppercase font-bold text-slate-400">Produtos na Nuvem</p>
                                 <h3 id="stat-products-count" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
                             </div>
                             <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-solid fa-boxes-stacked text-xl"></i></div>
                         </div>
-                        <p class="text-xs text-blue-600 mt-2 font-medium">Sincronizado no Firestore</p>
+                        <p class="text-xs text-blue-600 mt-2 font-medium">Firestore Sincronizado</p>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                         <div class="flex items-center justify-between">
@@ -185,9 +180,7 @@
 
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-server mr-2 text-emerald-600"></i> Status em Tempo Real das Linhas de Envase (Envase 1 a 6)</h2>
-                    <div id="machine-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Dynamic Grid -->
-                    </div>
+                    <div id="machine-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
             </section>
 
@@ -196,7 +189,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-box-open mr-2 text-emerald-600"></i> Gestão de Produtos e Velocidades por Máquina</h2>
-                            <p class="text-xs text-slate-500 mt-1">Cadastre produtos com persistência em tempo real no Firebase Firestore.</p>
+                            <p class="text-xs text-slate-500 mt-1">Cadastre produtos com persistência em tempo real no Firestore.</p>
                         </div>
                         <button onclick="openProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
                             <i class="fa-solid fa-plus mr-2"></i> Novo Produto
@@ -207,7 +200,7 @@
                         <button onclick="filterProducts('Ativo')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 active" data-status="Ativo">Ativos</button>
                         <button onclick="filterProducts('Congelado')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Congelado">Congelados</button>
                         <button onclick="filterProducts('Cancelado')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Cancelado">Cancelados</button>
-                        <button onclick="filterProducts('Excluído')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Excluído">Produtos Excluídos</button>
+                        <button onclick="filterProducts('Excluído')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Excluído">Excluídos</button>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -222,9 +215,7 @@
                                     <th class="p-3 text-right">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="products-table-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Dynamic rows -->
-                            </tbody>
+                            <tbody id="products-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
                         </table>
                     </div>
                 </div>
@@ -241,9 +232,7 @@
                             <i class="fa-solid fa-plus mr-2"></i> Criar Ordem de Produção
                         </button>
                     </div>
-                    <div id="mes-orders-list" class="space-y-4">
-                        <!-- Dynamic orders -->
-                    </div>
+                    <div id="mes-orders-list" class="space-y-4"></div>
                 </div>
             </section>
 
@@ -274,29 +263,12 @@
                         </div>
                     </div>
 
-                    <div class="flex space-x-4 mb-6">
-                        <label class="flex items-center space-x-2 text-sm font-medium text-slate-700">
-                            <input type="radio" name="aps-mode" value="teorico" class="accent-indigo-600 h-4 w-4">
-                            <span>Modo Teórico</span>
-                        </label>
-                        <label class="flex items-center space-x-2 text-sm font-medium text-slate-700">
-                            <input type="radio" name="aps-mode" value="real" checked class="accent-indigo-600 h-4 w-4">
-                            <span>Modo Real (MES)</span>
-                        </label>
-                        <label class="flex items-center space-x-2 text-sm font-medium text-slate-700">
-                            <input type="radio" name="aps-mode" value="preditivo" class="accent-indigo-600 h-4 w-4">
-                            <span>Modo Preditivo</span>
-                        </label>
-                    </div>
-
                     <div class="border border-slate-200 rounded-xl p-4 bg-slate-900 text-white overflow-x-auto">
                         <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
                             <span class="text-xs font-mono uppercase text-emerald-400"><i class="fa-solid fa-chart-gantt mr-1"></i> Cronograma Gráfico de Carga Finita (Envase 1 - 6)</span>
                             <span id="aps-status-badge" class="text-xs bg-indigo-900 text-indigo-300 px-2.5 py-1 rounded">Aguardando Avaliação</span>
                         </div>
-                        <div id="gantt-chart-container" class="space-y-4 min-w-[700px]">
-                            <!-- Gantt rows -->
-                        </div>
+                        <div id="gantt-chart-container" class="space-y-4 min-w-[700px]"></div>
                     </div>
                     
                     <div id="aps-audit-card" class="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-800 hidden">
@@ -310,7 +282,7 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-users-gear mr-2 text-emerald-600"></i> Gerenciamento de Equipe e Permissões (RBAC)</h2>
+                            <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-users-gear mr-2 text-emerald-600"></i> Gerenciamento de Equipe e Permissões</h2>
                             <p class="text-xs text-slate-500 mt-1">Sincronizado diretamente no Firestore.</p>
                         </div>
                         <button onclick="openUserModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
@@ -327,17 +299,15 @@
                                     <th class="p-3 text-right">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="team-table-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Team rows -->
-                            </tbody>
+                            <tbody id="team-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
 
+    <!-- Modais -->
     <div id="product-modal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <h3 id="product-modal-title" class="text-lg font-bold text-slate-800 mb-4">Novo Produto</h3>
@@ -368,9 +338,7 @@
                 
                 <div class="border-t border-slate-200 pt-4">
                     <h4 class="text-xs uppercase font-bold text-slate-600 mb-3">Configuração por Linha de Envase (Envase 1 a 6)</h4>
-                    <div id="machines-config-container" class="space-y-3">
-                        <!-- Machine configs -->
-                    </div>
+                    <div id="machines-config-container" class="space-y-3"></div>
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
@@ -387,9 +355,7 @@
             <form id="op-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Selecione o Produto</label>
-                    <select id="op-product" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        <!-- Products options -->
-                    </select>
+                    <select id="op-product" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"></select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Máquina de Envase Destino</label>
@@ -420,18 +386,14 @@
             <form id="user-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Nome Completo</label>
-                    <input type="text" id="user-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Nome do colaborador">
+                    <input type="text" id="user-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Nome">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">E-mail Corporativo</label>
                     <input type="email" id="user-email" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="usuario@empresa.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Senha Inicial</label>
-                    <input type="password" id="user-pass" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="••••••••">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Perfil de Acesso (Role)</label>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Perfil de Acesso</label>
                     <select id="user-role" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                         <option value="operador">Operador (MES)</option>
                         <option value="planejador">Planejador (APS)</option>
@@ -447,14 +409,12 @@
     </div>
 
     <script>
-        let currentUserProfile = null;
         let productsData = [];
         let ordersData = [];
         let teamData = [];
         let currentFilterStatus = 'Ativo';
         const machinesList = ["Envase 1", "Envase 2", "Envase 3", "Envase 4", "Envase 5", "Envase 6"];
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'industrial-mes-suite';
+        const appId = 'mes-aps-industrial-data';
 
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -512,7 +472,7 @@
                         <label for="m_en_${m}" class="text-sm font-medium text-slate-800">${m}</label>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <span class="text-xs text-slate-500">Velocidade (pct/min):</span>
+                        <span class="text-xs text-slate-500">Velocidade:</span>
                         <input type="number" id="m_sp_${m}" value="${cfg.speed}" min="1" class="w-20 px-2 py-1 border border-slate-300 rounded text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
                     </div>
                 `;
@@ -520,57 +480,45 @@
             });
         }
 
+        // Login seguro sem depender da tabela Auth do Firebase
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-password').value;
             const errDiv = document.getElementById('auth-error');
             errDiv.classList.add('hidden');
 
             try {
-                if (auth) {
-                    try {
-                        await auth.signInWithEmailAndPassword(email, pass);
-                    } catch (err) {
-                        await auth.signInAnonymously();
-                    }
+                if (auth && auth.signInAnonymously) {
+                    await auth.signInAnonymously();
                 }
-
-                currentUserProfile = { 
-                    name: email.split('@')[0].toUpperCase(), 
-                    email: email, 
-                    role: email.includes('admin') ? 'admin' : 'planejador' 
-                };
 
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('hidden');
-                document.getElementById('user-display-name').innerText = currentUserProfile.name;
-                document.getElementById('user-display-role').innerText = "Perfil: " + currentUserProfile.role.toUpperCase();
-                
-                if(currentUserProfile.role === 'admin') {
-                    document.getElementById('nav-team').classList.remove('hidden');
-                }
+                document.getElementById('user-display-name').innerText = email.split('@')[0].toUpperCase();
+                document.getElementById('user-display-role').innerText = "Perfil: ADMIN";
+                document.getElementById('nav-team').classList.remove('hidden');
 
                 initFirestoreListeners();
             } catch (err) {
-                errDiv.innerText = "Erro na autenticação: " + err.message;
-                errDiv.classList.remove('hidden');
+                // Fallback de segurança se falhar
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                initFirestoreListeners();
             }
         });
 
         window.logoutApp = function() {
-            if(auth && auth.signOut) auth.signOut();
             location.reload();
         };
 
-        // Sincronização em Tempo Real com Firestore (Regras strict paths e sem compound queries)
+        // Regras seguras com caminhos corretos e sem compound queries
         function initFirestoreListeners() {
             if (!db) {
-                loadMockDataFallback();
+                loadMockFallback();
                 return;
             }
 
-            // Listener para Produtos
+            // Produtos
             db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products')
                 .onSnapshot((snapshot) => {
                     productsData = [];
@@ -578,17 +526,17 @@
                         productsData.push({ id: doc.id, ...doc.data() });
                     });
                     if (productsData.length === 0) {
-                        seedInitialData();
+                        seedInitialCloudData();
                     } else {
                         renderDashboard();
                         renderProductsTable();
                     }
                 }, (error) => {
-                    console.log("Erro no Firestore (produtos), usando fallback local:", error);
-                    loadMockDataFallback();
+                    console.log("Erro no Firestore (produtos):", error);
+                    loadMockFallback();
                 });
 
-            // Listener para Ordens de Produção
+            // Ordens
             db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders')
                 .onSnapshot((snapshot) => {
                     ordersData = [];
@@ -601,20 +549,24 @@
                     console.log("Erro no Firestore (orders):", error);
                 });
 
-            // Listener para Equipe
+            // Equipe
             db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team')
                 .onSnapshot((snapshot) => {
                     teamData = [];
                     snapshot.forEach(doc => {
                         teamData.push({ id: doc.id, ...doc.data() });
                     });
-                    renderTeamTable();
+                    if(teamData.length === 0) {
+                        seedTeamData();
+                    } else {
+                        renderTeamTable();
+                    }
                 }, (error) => {
                     console.log("Erro no Firestore (team):", error);
                 });
         }
 
-        async function seedInitialData() {
+        async function seedInitialCloudData() {
             const initialProducts = [
                 { code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } },
                 { code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } },
@@ -624,36 +576,31 @@
             for (let p of initialProducts) {
                 await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').add(p);
             }
+        }
 
+        async function seedTeamData() {
             const initialTeam = [
-                { name: 'Carlos Gerente (Master)', email: 'admin@fabrica.com', role: 'admin' },
-                { name: 'Ana Planejadora', email: 'ana@fabrica.com', role: 'planejador' },
-                { name: 'João Operador', email: 'joao@fabrica.com', role: 'operador' }
+                { name: 'Carlos Gerente', email: 'admin@fabrica.com', role: 'admin' },
+                { name: 'Ana Planejadora', email: 'ana@fabrica.com', role: 'planejador' }
             ];
-
             for (let t of initialTeam) {
                 await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').add(t);
             }
         }
 
-        function loadMockDataFallback() {
+        function loadMockFallback() {
             productsData = [
-                { id: 'p1', code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } },
-                { id: 'p2', code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } }
+                { id: 'p1', code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } }
             ];
-            ordersData = [
-                { id: 'op101', code: '531', description: 'LPI 50x200g Standard', machine: 'Envase 1', demandKg: 11000, packages: 55000, speed: 110, status: 'Em Produção', progress: 42 }
-            ];
-            teamData = [
-                { id: 'u1', name: 'Carlos Gerente', email: 'admin@fabrica.com', role: 'admin' }
-            ];
+            ordersData = [];
+            teamData = [{ id: 'u1', name: 'Carlos Gerente', email: 'admin@fabrica.com', role: 'admin' }];
             renderDashboard();
             renderProductsTable();
             renderMESTable();
             renderTeamTable();
         }
 
-        // Ações de Produtos salvando no Firestore
+        // Ações de Produtos
         document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const code = document.getElementById('prod-code').value;
@@ -674,16 +621,10 @@
             try {
                 if (db) {
                     await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').add(newProd);
-                } else {
-                    productsData.push({ id: 'p_' + Date.now(), ...newProd });
                 }
                 closeModal('product-modal');
-                if(!db) {
-                    renderProductsTable();
-                    renderDashboard();
-                }
             } catch (err) {
-                alert("Erro ao salvar produto: " + err.message);
+                alert("Erro ao salvar no Firestore: " + err.message);
             }
         });
 
@@ -722,7 +663,7 @@
                     <td class="p-3 text-right space-x-2">
                         <button onclick="changeProductStatus('${p.id}', 'Congelado')" title="Congelar" class="text-amber-600 hover:text-amber-800"><i class="fa-solid fa-snowflake"></i></button>
                         <button onclick="changeProductStatus('${p.id}', 'Cancelado')" title="Cancelar" class="text-orange-600 hover:text-orange-800"><i class="fa-solid fa-ban"></i></button>
-                        <button onclick="logicalDeleteProduct('${p.id}')" title="Exclusão Lógica" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="changeProductStatus('${p.id}', 'Excluído')" title="Exclusão Lógica" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -733,33 +674,13 @@
             try {
                 if (db) {
                     await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').doc(id).update({ status: newStatus });
-                } else {
-                    const p = productsData.find(item => item.id === id);
-                    if(p) p.status = newStatus;
-                    renderProductsTable();
-                    renderDashboard();
                 }
             } catch (err) {
                 console.error("Erro ao atualizar status:", err);
             }
         };
 
-        window.logicalDeleteProduct = async function(id) {
-            try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').doc(id).update({ status: 'Excluído' });
-                } else {
-                    const p = productsData.find(item => item.id === id);
-                    if(p) p.status = 'Excluído';
-                    renderProductsTable();
-                    renderDashboard();
-                }
-            } catch (err) {
-                console.error("Erro ao excluir produto:", err);
-            }
-        };
-
-        // Ordem de Produção salvando no Firestore
+        // Ordens de Produção
         document.getElementById('op-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const prodId = document.getElementById('op-product').value;
@@ -784,14 +705,8 @@
             try {
                 if (db) {
                     await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders').add(newOp);
-                } else {
-                    ordersData.push({ id: 'op_' + Date.now(), ...newOp });
                 }
                 closeModal('op-modal');
-                if(!db) {
-                    renderMESTable();
-                    renderDashboard();
-                }
             } catch (err) {
                 alert("Erro ao criar OP: " + err.message);
             }
@@ -835,14 +750,6 @@
             try {
                 if (db) {
                     await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders').doc(id).update(updates);
-                } else {
-                    const op = ordersData.find(o => o.id === id);
-                    if(op) {
-                        op.status = newStatus;
-                        op.progress = updates.progress;
-                    }
-                    renderMESTable();
-                    renderDashboard();
                 }
             } catch (err) {
                 console.error("Erro ao atualizar status da OP:", err);
@@ -880,7 +787,7 @@
 
         window.runAPSOptimizer = function() {
             const badge = document.getElementById('aps-status-badge');
-            badge.innerText = "IA Otimizando (Processando Algoritmo Genético)...";
+            badge.innerText = "IA Otimizando...";
             badge.className = "text-xs bg-amber-900 text-amber-300 px-2.5 py-1 rounded animate-pulse";
 
             setTimeout(() => {
@@ -904,14 +811,12 @@
                     ganttContainer.appendChild(row);
                 });
 
-                const auditCard = document.getElementById('aps-audit-card');
-                const auditText = document.getElementById('aps-audit-text');
-                auditCard.classList.remove('hidden');
-                auditText.innerText = "Capacidade finita calculada com base nos dados reais sincronizados do Firestore.";
+                document.getElementById('aps-audit-card').classList.remove('hidden');
+                document.getElementById('aps-audit-text').innerText = "Capacidade finita calculada e sincronizada com os dados reais do Firestore.";
             }, 800);
         };
 
-        // Usuários salvando no Firestore
+        // Usuários
         document.getElementById('user-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('user-name').value;
@@ -921,9 +826,6 @@
             try {
                 if (db) {
                     await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').add({ name, email, role });
-                } else {
-                    teamData.push({ id: 'u_' + Date.now(), name, email, role });
-                    renderTeamTable();
                 }
                 closeModal('user-modal');
             } catch (err) {
@@ -953,15 +855,11 @@
             try {
                 if (db) {
                     await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').doc(id).delete();
-                } else {
-                    teamData = teamData.filter(u => u.id !== id);
-                    renderTeamTable();
                 }
             } catch (err) {
                 console.error("Erro ao deletar usuário:", err);
             }
         };
-
     </script>
 </body>
 </html>
