@@ -8,11 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     
     <script>
+        // Configuração OFICIAL do Firebase Firestore
         let firebaseConfig = {
             apiKey: "AIzaSyDWHUx5aTe92jPWL62Wkg4FDmBhalmDfaw",
             authDomain: "mes-aps-industrial.firebaseapp.com",
@@ -33,9 +35,9 @@
                 }
                 db = firebase.firestore();
                 auth = firebase.auth();
-                console.log("Firebase Inicializado com Sucesso!");
+                console.log("Firestore e Auth conectados com sucesso!");
             } catch (e) {
-                console.error("Erro Crítico na inicialização do Firebase:", e);
+                console.error("Erro na inicialização do Firebase:", e);
             }
         }
         
@@ -44,6 +46,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
+    <!-- TELA DE LOGIN -->
     <div id="auth-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 border-t-4 border-emerald-600">
             <div class="text-center mb-6">
@@ -51,25 +54,26 @@
                     <i class="fa-solid fa-industry"></i>
                 </div>
                 <h1 class="text-2xl font-bold text-slate-900">MES & APS Industrial</h1>
-                <p class="text-sm text-slate-500 mt-1">Conectado ao Firebase Cloud Firestore</p>
+                <p class="text-sm text-slate-500 mt-1">Sincronização em Nuvem Cloud Firestore</p>
                 
-                <div id="connection-status-badge" class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
-                    <span id="connection-text">Conectado: mes-aps-industrial</span>
+                <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                    <span>Nuviene Ativa: mes-aps-industrial</span>
                 </div>
             </div>
             
             <div class="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800">
-                <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Sincronização em Nuvem Ativa:</span>
-                Cadastros e operações salvam direto no Firestore. Basta clicar no botão abaixo para entrar!
+                <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Acesso Direto:</span>
+                Digite qualquer e-mail e senha para entrar e salvar seus dados na nuvem permanentemente.<br><br>
+                <i>Sugestão:</i> <code class="font-mono bg-white px-1 rounded">admin@fabrica.com</code> / <code class="font-mono bg-white px-1 rounded">123456</code>.
             </div>
 
             <form id="login-form" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Identificação / E-mail</label>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">E-mail Corporativo</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="login-email" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" value="admin@fabrica.com">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" id="login-email" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" value="admin@fabrica.com">
                     </div>
                 </div>
                 <div>
@@ -81,15 +85,14 @@
                 </div>
                 <div class="pt-2">
                     <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition-colors shadow-md text-sm">
-                        Entrar no Sistema e Sincronizar
+                        Entrar e Sincronizar na Nuvem
                     </button>
                 </div>
             </form>
-
-            <div id="auth-error" class="mt-4 p-3 bg-red-50 text-red-700 rounded-lg text-xs hidden"></div>
         </div>
     </div>
 
+    <!-- APLICAÇÃO PRINCIPAL -->
     <div id="app-container" class="hidden flex-1 flex flex-col">
         <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -99,7 +102,7 @@
                     </div>
                     <div>
                         <span class="font-bold text-lg tracking-wide">MES & APS Industrial</span>
-                        <span class="text-xs block text-emerald-400 font-mono">Envase 1 a 6 | Firestore Sync Ativo</span>
+                        <span class="text-xs block text-emerald-400 font-mono">Envase 1 a 6 | Firestore Conectado</span>
                     </div>
                 </div>
                 
@@ -116,7 +119,7 @@
                     <button onclick="switchTab('aps')" class="tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800" data-tab="aps">
                         <i class="fa-solid fa-calendar-days mr-1.5"></i> Inteligência APS
                     </button>
-                    <button id="nav-team" onclick="switchTab('team')" class="tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hidden" data-tab="team">
+                    <button id="nav-team" onclick="switchTab('team')" class="tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800" data-tab="team">
                         <i class="fa-solid fa-users-gear mr-1.5"></i> Equipe & RBAC
                     </button>
                 </nav>
@@ -124,7 +127,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="text-right hidden sm:block">
                         <div id="user-display-name" class="text-xs font-bold text-white">Usuário</div>
-                        <div id="user-display-role" class="text-[10px] uppercase font-mono text-emerald-400">ADMIN</div>
+                        <div class="text-[10px] uppercase font-mono text-emerald-400">ADMIN / NUVEM</div>
                     </div>
                     <button onclick="logoutApp()" class="bg-slate-800 hover:bg-red-900 text-slate-300 hover:text-white px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center">
                         <i class="fa-solid fa-power-off mr-1.5"></i> Sair
@@ -134,6 +137,7 @@
         </header>
 
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- DASHBOARD -->
             <section id="tab-dashboard" class="space-y-6 tab-content">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
@@ -184,12 +188,13 @@
                 </div>
             </section>
 
+            <!-- PRODUTOS -->
             <section id="tab-products" class="space-y-6 tab-content hidden">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-box-open mr-2 text-emerald-600"></i> Gestão de Produtos e Velocidades por Máquina</h2>
-                            <p class="text-xs text-slate-500 mt-1">Cadastre produtos com persistência em tempo real no Firestore.</p>
+                            <p class="text-xs text-slate-500 mt-1">Cadastre produtos e salve direto no banco de dados Firestore.</p>
                         </div>
                         <button onclick="openProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
                             <i class="fa-solid fa-plus mr-2"></i> Novo Produto
@@ -221,12 +226,13 @@
                 </div>
             </section>
 
+            <!-- MES -->
             <section id="tab-mes" class="space-y-6 tab-content hidden">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-clipboard-check mr-2 text-emerald-600"></i> Apontamento de Chão de Fábrica (MES)</h2>
-                            <p class="text-xs text-slate-500 mt-1">Ordens de produção sincronizadas no Firestore.</p>
+                            <p class="text-xs text-slate-500 mt-1">Ordens de produção sincronizadas em tempo real no Firestore.</p>
                         </div>
                         <button onclick="openCreateOPModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
                             <i class="fa-solid fa-plus mr-2"></i> Criar Ordem de Produção
@@ -236,6 +242,7 @@
                 </div>
             </section>
 
+            <!-- APS -->
             <section id="tab-aps" class="space-y-6 tab-content hidden">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -278,6 +285,7 @@
                 </div>
             </section>
 
+            <!-- EQUIPE -->
             <section id="tab-team" class="space-y-6 tab-content hidden">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex justify-between items-center mb-6">
@@ -307,12 +315,11 @@
         </main>
     </div>
 
-    <!-- Modais -->
+    <!-- MODAIS -->
     <div id="product-modal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <h3 id="product-modal-title" class="text-lg font-bold text-slate-800 mb-4">Novo Produto</h3>
             <form id="product-form" class="space-y-4">
-                <input type="hidden" id="prod-id">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Código do Produto</label>
@@ -408,13 +415,16 @@
         </div>
     </div>
 
+    <!-- SCRIPT DE GERENCIAMENTO DE DADOS E FIRESTORE -->
     <script>
         let productsData = [];
         let ordersData = [];
         let teamData = [];
         let currentFilterStatus = 'Ativo';
         const machinesList = ["Envase 1", "Envase 2", "Envase 3", "Envase 4", "Envase 5", "Envase 6"];
-        const appId = 'mes-aps-industrial-data';
+        
+        // Caminho seguro no Firestore dentro do projeto
+        const rootCollection = db ? db.collection('artifacts').doc('mes-aps-industrial-data').collection('public').doc('data') : null;
 
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -435,7 +445,6 @@
         };
 
         window.openProductModal = function() {
-            document.getElementById('prod-id').value = '';
             document.getElementById('product-form').reset();
             document.getElementById('product-modal-title').innerText = "Novo Produto";
             buildMachinesConfigInputs();
@@ -480,127 +489,115 @@
             });
         }
 
-        // Login seguro sem depender da tabela Auth do Firebase
+        // Login direto e autenticação anônima integrada para garantir permissão no Firestore
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
-            const errDiv = document.getElementById('auth-error');
-            errDiv.classList.add('hidden');
 
             try {
                 if (auth && auth.signInAnonymously) {
                     await auth.signInAnonymously();
                 }
-
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('app-container').classList.remove('hidden');
-                document.getElementById('user-display-name').innerText = email.split('@')[0].toUpperCase();
-                document.getElementById('user-display-role').innerText = "Perfil: ADMIN";
-                document.getElementById('nav-team').classList.remove('hidden');
-
-                initFirestoreListeners();
             } catch (err) {
-                // Fallback de segurança se falhar
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('app-container').classList.remove('hidden');
-                initFirestoreListeners();
+                console.log("Modo offline ou autenticação anônima já ativa.");
             }
+
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('user-display-name').innerText = email.split('@')[0].toUpperCase();
+
+            initFirestoreSync();
         });
 
         window.logoutApp = function() {
             location.reload();
         };
 
-        // Regras seguras com caminhos corretos e sem compound queries
-        function initFirestoreListeners() {
-            if (!db) {
+        // Sincronização Realtime com o Firestore
+        function initFirestoreSync() {
+            if (!db || !rootCollection) {
                 loadMockFallback();
                 return;
             }
 
-            // Produtos
-            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products')
-                .onSnapshot((snapshot) => {
-                    productsData = [];
-                    snapshot.forEach(doc => {
-                        productsData.push({ id: doc.id, ...doc.data() });
-                    });
-                    if (productsData.length === 0) {
-                        seedInitialCloudData();
-                    } else {
-                        renderDashboard();
-                        renderProductsTable();
-                    }
-                }, (error) => {
-                    console.log("Erro no Firestore (produtos):", error);
-                    loadMockFallback();
+            // Ouvir Produtos
+            rootCollection.collection('products').onSnapshot((snapshot) => {
+                productsData = [];
+                snapshot.forEach(doc => {
+                    productsData.push({ id: doc.id, ...doc.data() });
                 });
-
-            // Ordens
-            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders')
-                .onSnapshot((snapshot) => {
-                    ordersData = [];
-                    snapshot.forEach(doc => {
-                        ordersData.push({ id: doc.id, ...doc.data() });
-                    });
+                if (productsData.length === 0) {
+                    seedInitialData();
+                } else {
                     renderDashboard();
-                    renderMESTable();
-                }, (error) => {
-                    console.log("Erro no Firestore (orders):", error);
-                });
+                    renderProductsTable();
+                }
+            }, (error) => {
+                console.error("Erro ao sincronizar produtos:", error);
+                loadMockFallback();
+            });
 
-            // Equipe
-            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team')
-                .onSnapshot((snapshot) => {
-                    teamData = [];
-                    snapshot.forEach(doc => {
-                        teamData.push({ id: doc.id, ...doc.data() });
-                    });
-                    if(teamData.length === 0) {
-                        seedTeamData();
-                    } else {
-                        renderTeamTable();
-                    }
-                }, (error) => {
-                    console.log("Erro no Firestore (team):", error);
+            // Ouvir Ordens de Produção
+            rootCollection.collection('orders').onSnapshot((snapshot) => {
+                ordersData = [];
+                snapshot.forEach(doc => {
+                    ordersData.push({ id: doc.id, ...doc.data() });
                 });
+                renderDashboard();
+                renderMESTable();
+            }, (error) => {
+                console.error("Erro ao sincronizar ordens:", error);
+            });
+
+            // Ouvir Equipe
+            rootCollection.collection('team').onSnapshot((snapshot) => {
+                teamData = [];
+                snapshot.forEach(doc => {
+                    teamData.push({ id: doc.id, ...doc.data() });
+                });
+                if (teamData.length === 0) {
+                    seedTeamData();
+                } else {
+                    renderTeamTable();
+                }
+            }, (error) => {
+                console.error("Erro ao sincronizar equipe:", error);
+            });
         }
 
-        async function seedInitialCloudData() {
+        async function seedInitialData() {
             const initialProducts = [
                 { code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } },
-                { code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } },
-                { code: '601', description: 'Leite UHT 1L Integral', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:90}, 'Envase 2': {enabled:true, speed:90}, 'Envase 3': {enabled:true, speed:90}, 'Envase 4': {enabled:true, speed:90}, 'Envase 5': {enabled:true, speed:90}, 'Envase 6': {enabled:true, speed:90} } }
+                { code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } }
             ];
-
             for (let p of initialProducts) {
-                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').add(p);
+                await rootCollection.collection('products').add(p);
             }
         }
 
         async function seedTeamData() {
             const initialTeam = [
-                { name: 'Carlos Gerente', email: 'admin@fabrica.com', role: 'admin' },
+                { name: 'Carlos Administrador', email: 'admin@fabrica.com', role: 'admin' },
                 { name: 'Ana Planejadora', email: 'ana@fabrica.com', role: 'planejador' }
             ];
             for (let t of initialTeam) {
-                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').add(t);
+                await rootCollection.collection('team').add(t);
             }
         }
 
         function loadMockFallback() {
             productsData = [
-                { id: 'p1', code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } }
+                { id: 'p1', code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110} } }
             ];
             ordersData = [];
-            teamData = [{ id: 'u1', name: 'Carlos Gerente', email: 'admin@fabrica.com', role: 'admin' }];
+            teamData = [{ id: 'u1', name: 'Carlos Admin', email: 'admin@fabrica.com', role: 'admin' }];
             renderDashboard();
             renderProductsTable();
             renderMESTable();
             renderTeamTable();
         }
 
-        // Ações de Produtos
+        // --- GESTÃO DE PRODUTOS ---
         document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const code = document.getElementById('prod-code').value;
@@ -619,8 +616,8 @@
             const newProd = { code, description: desc, weight, status, machines };
 
             try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').add(newProd);
+                if (rootCollection) {
+                    await rootCollection.collection('products').add(newProd);
                 }
                 closeModal('product-modal');
             } catch (err) {
@@ -672,15 +669,15 @@
 
         window.changeProductStatus = async function(id, newStatus) {
             try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').doc(id).update({ status: newStatus });
+                if (rootCollection) {
+                    await rootCollection.collection('products').doc(id).update({ status: newStatus });
                 }
             } catch (err) {
                 console.error("Erro ao atualizar status:", err);
             }
         };
 
-        // Ordens de Produção
+        // --- ORDENS DE PRODUÇÃO (MES) ---
         document.getElementById('op-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const prodId = document.getElementById('op-product').value;
@@ -703,8 +700,8 @@
             };
 
             try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders').add(newOp);
+                if (rootCollection) {
+                    await rootCollection.collection('orders').add(newOp);
                 }
                 closeModal('op-modal');
             } catch (err) {
@@ -727,11 +724,11 @@
                 div.innerHTML = `
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="font-mono font-bold text-slate-800 text-sm">OP: ${op.id}</span>
+                            <span class="font-mono font-bold text-slate-800 text-sm">OP ID: ${op.id.substring(0,6)}...</span>
                             <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded ${op.status==='Em Produção'?'bg-amber-100 text-amber-800':op.status==='Concluída'?'bg-emerald-100 text-emerald-800':'bg-slate-200 text-slate-600'}">${op.status}</span>
                         </div>
                         <h4 class="text-sm font-semibold text-slate-700 mt-1">${op.code} - ${op.description}</h4>
-                        <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-industry mr-1 text-emerald-600"></i> ${op.machine} &bull; ${op.demandKg} kg (${op.packages} pacotes @ ${op.speed} pct/min)</p>
+                        <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-industry mr-1 text-emerald-600"></i> ${op.machine} &bull; ${op.demandKg} kg (${op.packages} pct @ ${op.speed} pct/min)</p>
                     </div>
                     <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
                         ${op.status === 'Planejada' ? `<button onclick="updateOPStatus('${op.id}', 'Em Produção')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm"><i class="fa-solid fa-play mr-1"></i> Iniciar</button>` : ''}
@@ -748,11 +745,11 @@
             if(newStatus === 'Em Produção') updates.progress = 25;
 
             try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders').doc(id).update(updates);
+                if (rootCollection) {
+                    await rootCollection.collection('orders').doc(id).update(updates);
                 }
             } catch (err) {
-                console.error("Erro ao atualizar status da OP:", err);
+                console.error("Erro ao atualizar OP:", err);
             }
         };
 
@@ -785,6 +782,7 @@
             });
         }
 
+        // --- APS OTIMIZADOR ---
         window.runAPSOptimizer = function() {
             const badge = document.getElementById('aps-status-badge');
             badge.innerText = "IA Otimizando...";
@@ -813,10 +811,10 @@
 
                 document.getElementById('aps-audit-card').classList.remove('hidden');
                 document.getElementById('aps-audit-text').innerText = "Capacidade finita calculada e sincronizada com os dados reais do Firestore.";
-            }, 800);
+            }, 600);
         };
 
-        // Usuários
+        // --- EQUIPE ---
         document.getElementById('user-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('user-name').value;
@@ -824,8 +822,8 @@
             const role = document.getElementById('user-role').value;
 
             try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').add({ name, email, role });
+                if (rootCollection) {
+                    await rootCollection.collection('team').add({ name, email, role });
                 }
                 closeModal('user-modal');
             } catch (err) {
@@ -853,8 +851,8 @@
 
         window.deleteUser = async function(id) {
             try {
-                if (db) {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').doc(id).delete();
+                if (rootCollection) {
+                    await rootCollection.collection('team').doc(id).delete();
                 }
             } catch (err) {
                 console.error("Erro ao deletar usuário:", err);
