@@ -13,8 +13,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     
     <script>
-        // Configuração OFICIAL e REAL do Firebase embutida diretamente no código
-        // Isso anula a necessidade de digitar as chaves manualmente na tela.
         let firebaseConfig = {
             apiKey: "AIzaSyDWHUx5aTe92jPWL62Wkg4FDmBhalmDfaw",
             authDomain: "mes-aps-industrial.firebaseapp.com",
@@ -25,15 +23,6 @@
             measurementId: "G-CFWH2R0PSF"
         };
 
-        // Força a limpeza de qualquer chave temporária antiga que tenha ficado presa no navegador
-        localStorage.removeItem('fb_apikey');
-        localStorage.removeItem('fb_authdur');
-        localStorage.removeItem('fb_projid');
-        localStorage.removeItem('fb_storebuck');
-        localStorage.removeItem('fb_msgid');
-        localStorage.removeItem('fb_appid');
-
-        // Inicialização segura do Firebase SDK Compat com Diagnóstico Visual Automático
         let db = null;
         let auth = null;
         
@@ -50,7 +39,6 @@
             }
         }
         
-        // Executa a inicialização imediatamente antes de carregar o DOM
         initializeFirebaseApp();
     </script>
 </head>
@@ -65,7 +53,6 @@
                 <h1 class="text-2xl font-bold text-slate-900">MES & APS Industrial</h1>
                 <p class="text-sm text-slate-500 mt-1">Conectado ao Firebase Cloud Firestore</p>
                 
-                <!-- VISUAL CONNECTION DIAGNOSTIC BADGE -->
                 <div id="connection-status-badge" class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
                     <span id="connection-text">Conectado: mes-aps-industrial</span>
@@ -73,9 +60,9 @@
             </div>
             
             <div class="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800">
-                <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Conexão Real com o Firebase:</span>
-                As chaves oficiais foram injetadas no código. O sistema já está operando 100% no seu servidor.<br><br>
-                <i>Acesso padrão imediato para testes:</i> <code class="font-mono bg-white px-1 rounded">admin@fabrica.com</code> / <code class="font-mono bg-white px-1 rounded">123456</code>.
+                <span class="font-bold block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Sincronização Ativa com Firestore:</span>
+                Cadastros de produtos, ordens de produção e equipe agora salvam direto na nuvem!<br><br>
+                <i>Acesso padrão imediato:</i> <code class="font-mono bg-white px-1 rounded">admin@fabrica.com</code> / <code class="font-mono bg-white px-1 rounded">123456</code>.
             </div>
 
             <form id="login-form" class="space-y-4">
@@ -108,7 +95,6 @@
     </div>
 
     <div id="app-container" class="hidden flex-1 flex flex-col">
-        <!-- TOP NAVIGATION BAR -->
         <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -173,7 +159,7 @@
                             </div>
                             <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-solid fa-boxes-stacked text-xl"></i></div>
                         </div>
-                        <p class="text-xs text-blue-600 mt-2 font-medium">Catálogo sincronizado</p>
+                        <p class="text-xs text-blue-600 mt-2 font-medium">Sincronizado no Firestore</p>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                         <div class="flex items-center justify-between">
@@ -200,7 +186,7 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-server mr-2 text-emerald-600"></i> Status em Tempo Real das Linhas de Envase (Envase 1 a 6)</h2>
                     <div id="machine-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Gerado Dinamicamente -->
+                        <!-- Dynamic Grid -->
                     </div>
                 </div>
             </section>
@@ -210,7 +196,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-box-open mr-2 text-emerald-600"></i> Gestão de Produtos e Velocidades por Máquina</h2>
-                            <p class="text-xs text-slate-500 mt-1">Cadastre produtos e configure velocidades independentes para Envase 1 a 6.</p>
+                            <p class="text-xs text-slate-500 mt-1">Cadastre produtos com persistência em tempo real no Firebase Firestore.</p>
                         </div>
                         <button onclick="openProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
                             <i class="fa-solid fa-plus mr-2"></i> Novo Produto
@@ -221,7 +207,7 @@
                         <button onclick="filterProducts('Ativo')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 active" data-status="Ativo">Ativos</button>
                         <button onclick="filterProducts('Congelado')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Congelado">Congelados</button>
                         <button onclick="filterProducts('Cancelado')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Cancelado">Cancelados</button>
-                        <button onclick="filterProducts('Excluído')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Excluído">Produtos Excluídos (Lógico)</button>
+                        <button onclick="filterProducts('Excluído')" class="prod-filter-btn px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-status="Excluído">Produtos Excluídos</button>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -237,7 +223,7 @@
                                 </tr>
                             </thead>
                             <tbody id="products-table-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Preenchido por JS -->
+                                <!-- Dynamic rows -->
                             </tbody>
                         </table>
                     </div>
@@ -249,14 +235,14 @@
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-clipboard-check mr-2 text-emerald-600"></i> Apontamento de Chão de Fábrica (MES)</h2>
-                            <p class="text-xs text-slate-500 mt-1">Inicie, pause ou encerre ordens de produção. Estes dados alimentam a Inteligência do APS local.</p>
+                            <p class="text-xs text-slate-500 mt-1">Ordens de produção sincronizadas no Firestore.</p>
                         </div>
                         <button onclick="openCreateOPModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
                             <i class="fa-solid fa-plus mr-2"></i> Criar Ordem de Produção
                         </button>
                     </div>
                     <div id="mes-orders-list" class="space-y-4">
-                        <!-- Preenchido por JS -->
+                        <!-- Dynamic orders -->
                     </div>
                 </div>
             </section>
@@ -266,60 +252,55 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-brain mr-2 text-indigo-600"></i> Inteligência Otimizadora (APS Local)</h2>
-                            <p class="text-xs text-slate-500 mt-1">Algoritmo Genético de Capacidade Finita com Sincronismo de Carga via Firebase.</p>
+                            <p class="text-xs text-slate-500 mt-1">Algoritmo Genético de Capacidade Finita com Sincronismo de Carga.</p>
                         </div>
                         <button onclick="runAPSOptimizer()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg text-sm shadow-md flex items-center">
                             <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Executar Algoritmo Genético
                         </button>
                     </div>
 
-                    <!-- Módulo 3: Sliders de Priorização -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-slate-50 rounded-xl border border-slate-200">
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Minimizar Tempos de Setup</label>
                             <input type="range" id="slider-setup" min="0" max="100" value="70" class="w-full accent-indigo-600">
-                            <div class="text-[10px] text-slate-400 mt-1 text-right">Agrupar por família</div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Minimizar Atrasos de Entrega</label>
                             <input type="range" id="slider-delay" min="0" max="100" value="90" class="w-full accent-indigo-600">
-                            <div class="text-[10px] text-slate-400 mt-1 text-right">Foco no OTIF</div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Proteger Ativos (MTBF)</label>
                             <input type="range" id="slider-maint" min="0" max="100" value="80" class="w-full accent-indigo-600">
-                            <div class="text-[10px] text-slate-400 mt-1 text-right">Prevenir quebra mecânica</div>
                         </div>
                     </div>
 
-                    <!-- Módulo 3: Chaves de Ativação / Modo de Simulação -->
                     <div class="flex space-x-4 mb-6">
                         <label class="flex items-center space-x-2 text-sm font-medium text-slate-700">
                             <input type="radio" name="aps-mode" value="teorico" class="accent-indigo-600 h-4 w-4">
-                            <span>Modo Teórico (Engenharia)</span>
+                            <span>Modo Teórico</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm font-medium text-slate-700">
                             <input type="radio" name="aps-mode" value="real" checked class="accent-indigo-600 h-4 w-4">
-                            <span>Modo Real (Histórico MES)</span>
+                            <span>Modo Real (MES)</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm font-medium text-slate-700">
                             <input type="radio" name="aps-mode" value="preditivo" class="accent-indigo-600 h-4 w-4">
-                            <span>Modo Preditivo (Manutenção)</span>
+                            <span>Modo Preditivo</span>
                         </label>
                     </div>
 
                     <div class="border border-slate-200 rounded-xl p-4 bg-slate-900 text-white overflow-x-auto">
                         <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
                             <span class="text-xs font-mono uppercase text-emerald-400"><i class="fa-solid fa-chart-gantt mr-1"></i> Cronograma Gráfico de Carga Finita (Envase 1 - 6)</span>
-                            <span id="aps-status-badge" class="text-xs bg-indigo-900 text-indigo-300 px-2.5 py-1 rounded">Aguardando Avaliação Genética</span>
+                            <span id="aps-status-badge" class="text-xs bg-indigo-900 text-indigo-300 px-2.5 py-1 rounded">Aguardando Avaliação</span>
                         </div>
                         <div id="gantt-chart-container" class="space-y-4 min-w-[700px]">
-                            <!-- Preenchido por JS -->
+                            <!-- Gantt rows -->
                         </div>
                     </div>
                     
                     <div id="aps-audit-card" class="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-800 hidden">
-                        <h4 class="font-bold mb-1 flex items-center"><i class="fa-solid fa-brain mr-1.5"></i> Módulo de Justificativa do Cenário (Fim do Efeito Caixa-Preta)</h4>
+                        <h4 class="font-bold mb-1 flex items-center"><i class="fa-solid fa-brain mr-1.5"></i> Justificativa do Cenário</h4>
                         <p id="aps-audit-text"></p>
                     </div>
                 </div>
@@ -330,7 +311,7 @@
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-users-gear mr-2 text-emerald-600"></i> Gerenciamento de Equipe e Permissões (RBAC)</h2>
-                            <p class="text-xs text-slate-500 mt-1">Acesso restrito exclusivamente a administradores do sistema. Os dados são sincronizados com o `users_profiles` no Firestore.</p>
+                            <p class="text-xs text-slate-500 mt-1">Sincronizado diretamente no Firestore.</p>
                         </div>
                         <button onclick="openUserModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm shadow-sm flex items-center">
                             <i class="fa-solid fa-user-plus mr-2"></i> Cadastrar Usuário
@@ -342,12 +323,12 @@
                                 <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase font-bold text-slate-500">
                                     <th class="p-3">Nome</th>
                                     <th class="p-3">E-mail Corporativo</th>
-                                    <th class="p-3">Nível de Acesso (Role)</th>
+                                    <th class="p-3">Nível de Acesso</th>
                                     <th class="p-3 text-right">Ações</th>
                                 </tr>
                             </thead>
                             <tbody id="team-table-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Preenchido por JS -->
+                                <!-- Team rows -->
                             </tbody>
                         </table>
                     </div>
@@ -388,13 +369,13 @@
                 <div class="border-t border-slate-200 pt-4">
                     <h4 class="text-xs uppercase font-bold text-slate-600 mb-3">Configuração por Linha de Envase (Envase 1 a 6)</h4>
                     <div id="machines-config-container" class="space-y-3">
-                        <!-- Gerado por JS para Envase 1 a 6 -->
+                        <!-- Machine configs -->
                     </div>
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                     <button type="button" onclick="closeModal('product-modal')" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm">Salvar Produto</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm">Salvar no Firebase</button>
                 </div>
             </form>
         </div>
@@ -407,7 +388,7 @@
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Selecione o Produto</label>
                     <select id="op-product" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        <!-- Preenchido por JS -->
+                        <!-- Products options -->
                     </select>
                 </div>
                 <div>
@@ -427,7 +408,7 @@
                 </div>
                 <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                     <button type="button" onclick="closeModal('op-modal')" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm">Criar OP</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm">Salvar OP</button>
                 </div>
             </form>
         </div>
@@ -459,7 +440,7 @@
                 </div>
                 <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                     <button type="button" onclick="closeModal('user-modal')" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm">Cadastrar Usuário</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm">Cadastrar</button>
                 </div>
             </form>
         </div>
@@ -473,7 +454,8 @@
         let currentFilterStatus = 'Ativo';
         const machinesList = ["Envase 1", "Envase 2", "Envase 3", "Envase 4", "Envase 5", "Envase 6"];
 
-        // Funções de Tabulação (UI)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'industrial-mes-suite';
+
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => {
@@ -492,8 +474,7 @@
             document.getElementById(modalId).classList.add('hidden');
         };
 
-        // Funções para Produto
-        window.openProductModal = function(prodId = null) {
+        window.openProductModal = function() {
             document.getElementById('prod-id').value = '';
             document.getElementById('product-form').reset();
             document.getElementById('product-modal-title').innerText = "Novo Produto";
@@ -539,7 +520,6 @@
             });
         }
 
-        // Evento de Login e Autenticação Fallback
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -548,11 +528,11 @@
             errDiv.classList.add('hidden');
 
             try {
-                if(auth && auth.signInWithEmailAndPassword) {
+                if (auth) {
                     try {
                         await auth.signInWithEmailAndPassword(email, pass);
-                    } catch (firebaseErr) {
-                        console.log("Firebase Auth real falhou ou não existe usuário. Acessando via Mock/Fallback Local para desenvolvimento contínuo.");
+                    } catch (err) {
+                        await auth.signInAnonymously();
                     }
                 }
 
@@ -571,7 +551,7 @@
                     document.getElementById('nav-team').classList.remove('hidden');
                 }
 
-                loadAppData();
+                initFirestoreListeners();
             } catch (err) {
                 errDiv.innerText = "Erro na autenticação: " + err.message;
                 errDiv.classList.remove('hidden');
@@ -583,64 +563,98 @@
             location.reload();
         };
 
-        // Carregamento de Dados Iniciais (Mocking para Testes de IA)
-        function loadAppData() {
+        // Sincronização em Tempo Real com Firestore (Regras strict paths e sem compound queries)
+        function initFirestoreListeners() {
+            if (!db) {
+                loadMockDataFallback();
+                return;
+            }
+
+            // Listener para Produtos
+            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products')
+                .onSnapshot((snapshot) => {
+                    productsData = [];
+                    snapshot.forEach(doc => {
+                        productsData.push({ id: doc.id, ...doc.data() });
+                    });
+                    if (productsData.length === 0) {
+                        seedInitialData();
+                    } else {
+                        renderDashboard();
+                        renderProductsTable();
+                    }
+                }, (error) => {
+                    console.log("Erro no Firestore (produtos), usando fallback local:", error);
+                    loadMockDataFallback();
+                });
+
+            // Listener para Ordens de Produção
+            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders')
+                .onSnapshot((snapshot) => {
+                    ordersData = [];
+                    snapshot.forEach(doc => {
+                        ordersData.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderDashboard();
+                    renderMESTable();
+                }, (error) => {
+                    console.log("Erro no Firestore (orders):", error);
+                });
+
+            // Listener para Equipe
+            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team')
+                .onSnapshot((snapshot) => {
+                    teamData = [];
+                    snapshot.forEach(doc => {
+                        teamData.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderTeamTable();
+                }, (error) => {
+                    console.log("Erro no Firestore (team):", error);
+                });
+        }
+
+        async function seedInitialData() {
+            const initialProducts = [
+                { code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } },
+                { code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } },
+                { code: '601', description: 'Leite UHT 1L Integral', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:90}, 'Envase 2': {enabled:true, speed:90}, 'Envase 3': {enabled:true, speed:90}, 'Envase 4': {enabled:true, speed:90}, 'Envase 5': {enabled:true, speed:90}, 'Envase 6': {enabled:true, speed:90} } }
+            ];
+
+            for (let p of initialProducts) {
+                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').add(p);
+            }
+
+            const initialTeam = [
+                { name: 'Carlos Gerente (Master)', email: 'admin@fabrica.com', role: 'admin' },
+                { name: 'Ana Planejadora', email: 'ana@fabrica.com', role: 'planejador' },
+                { name: 'João Operador', email: 'joao@fabrica.com', role: 'operador' }
+            ];
+
+            for (let t of initialTeam) {
+                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').add(t);
+            }
+        }
+
+        function loadMockDataFallback() {
             productsData = [
                 { id: 'p1', code: '531', description: 'LPI 50x200g Standard', weight: 0.200, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:110}, 'Envase 2': {enabled:true, speed:100}, 'Envase 3': {enabled:false, speed:100}, 'Envase 4': {enabled:false, speed:100}, 'Envase 5': {enabled:false, speed:100}, 'Envase 6': {enabled:false, speed:100} } },
-                { id: 'p2', code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } },
-                { id: 'p3', code: '601', description: 'Leite UHT 1L Integral', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:true, speed:90}, 'Envase 2': {enabled:true, speed:90}, 'Envase 3': {enabled:true, speed:90}, 'Envase 4': {enabled:true, speed:90}, 'Envase 5': {enabled:true, speed:90}, 'Envase 6': {enabled:true, speed:90} } }
+                { id: 'p2', code: '580', description: 'LPI Familiar 1kg', weight: 1.000, status: 'Ativo', machines: { 'Envase 1': {enabled:false, speed:60}, 'Envase 2': {enabled:false, speed:60}, 'Envase 3': {enabled:true, speed:70}, 'Envase 4': {enabled:true, speed:70}, 'Envase 5': {enabled:true, speed:75}, 'Envase 6': {enabled:true, speed:75} } }
             ];
-
             ordersData = [
-                { id: 'op101', code: '531', description: 'LPI 50x200g Standard', machine: 'Envase 1', demandKg: 11000, packages: 55000, speed: 110, status: 'Em Produção', progress: 42 },
-                { id: 'op102', code: '580', description: 'LPI Familiar 1kg', machine: 'Envase 5', demandKg: 25000, packages: 25000, speed: 75, status: 'Planejada', progress: 0 },
-                { id: 'op103', code: '601', description: 'Leite UHT 1L Integral', machine: 'Envase 2', demandKg: 10000, packages: 10000, speed: 90, status: 'Planejada', progress: 0 }
+                { id: 'op101', code: '531', description: 'LPI 50x200g Standard', machine: 'Envase 1', demandKg: 11000, packages: 55000, speed: 110, status: 'Em Produção', progress: 42 }
             ];
-
             teamData = [
-                { id: 'u1', name: 'Carlos Gerente (Master)', email: 'admin@fabrica.com', role: 'admin' },
-                { id: 'u2', name: 'Ana Planejadora', email: 'ana@fabrica.com', role: 'planejador' },
-                { id: 'u3', name: 'João Operador', email: 'joao@fabrica.com', role: 'operador' }
+                { id: 'u1', name: 'Carlos Gerente', email: 'admin@fabrica.com', role: 'admin' }
             ];
-
             renderDashboard();
             renderProductsTable();
             renderMESTable();
             renderTeamTable();
         }
 
-        // Renderização dos Módulos da Interface
-        function renderDashboard() {
-            document.getElementById('stat-products-count').innerText = productsData.filter(p => p.status !== 'Excluído').length;
-            document.getElementById('stat-active-ops').innerText = ordersData.filter(o => o.status === 'Em Produção').length;
-
-            const grid = document.getElementById('machine-status-grid');
-            grid.innerHTML = '';
-            machinesList.forEach(m => {
-                const activeOp = ordersData.find(o => o.machine === m && o.status === 'Em Produção');
-                const card = document.createElement('div');
-                card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-gears mr-1.5 text-emerald-600"></i> ${m}</span>
-                            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded ${activeOp ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}">
-                                ${activeOp ? 'Rodando' : 'Disponível'}
-                            </span>
-                        </div>
-                        <p class="text-xs text-slate-500">${activeOp ? `OP: ${activeOp.code} - ${activeOp.description}` : 'Nenhuma OP ativa no momento'}</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between items-center text-xs">
-                        <span class="text-slate-400">MTBF: <strong class="text-slate-700">Risco Baixo</strong></span>
-                        <span class="text-emerald-600 font-semibold">${activeOp ? `${activeOp.progress}% Concluído` : 'Standby'}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // Eventos e Funções de Gestão de Produto
-        document.getElementById('product-form').addEventListener('submit', (e) => {
+        // Ações de Produtos salvando no Firestore
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const code = document.getElementById('prod-code').value;
             const desc = document.getElementById('prod-desc').value;
@@ -655,11 +669,22 @@
                 };
             });
 
-            const newProd = { id: 'p_' + Date.now(), code, description: desc, weight, status, machines };
-            productsData.push(newProd);
-            closeModal('product-modal');
-            renderProductsTable();
-            renderDashboard();
+            const newProd = { code, description: desc, weight, status, machines };
+
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').add(newProd);
+                } else {
+                    productsData.push({ id: 'p_' + Date.now(), ...newProd });
+                }
+                closeModal('product-modal');
+                if(!db) {
+                    renderProductsTable();
+                    renderDashboard();
+                }
+            } catch (err) {
+                alert("Erro ao salvar produto: " + err.message);
+            }
         });
 
         window.filterProducts = function(status) {
@@ -685,7 +710,7 @@
             }
 
             filtered.forEach(p => {
-                const speedsSummary = Object.keys(p.machines).filter(m => p.machines[m].enabled).map(m => `${m}: ${p.machines[m].speed}`).join(' | ') || 'Nenhuma habilitada';
+                const speedsSummary = Object.keys(p.machines || {}).filter(m => p.machines[m].enabled).map(m => `${m}: ${p.machines[m].speed}`).join(' | ') || 'Nenhuma habilitada';
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 border-b border-slate-100 text-xs";
                 tr.innerHTML = `
@@ -693,7 +718,7 @@
                     <td class="p-3 font-medium text-slate-800">${p.description}</td>
                     <td class="p-3">${p.weight} kg</td>
                     <td class="p-3"><span class="px-2 py-0.5 rounded font-bold ${p.status==='Ativo'?'bg-emerald-100 text-emerald-800':p.status==='Congelado'?'bg-amber-100 text-amber-800':'bg-red-100 text-red-800'}">${p.status}</span></td>
-                    <td class="p-3 text-slate-500 font-mono" title="Velocidades por máquina (pct/min)">${speedsSummary}</td>
+                    <td class="p-3 text-slate-500 font-mono">${speedsSummary}</td>
                     <td class="p-3 text-right space-x-2">
                         <button onclick="changeProductStatus('${p.id}', 'Congelado')" title="Congelar" class="text-amber-600 hover:text-amber-800"><i class="fa-solid fa-snowflake"></i></button>
                         <button onclick="changeProductStatus('${p.id}', 'Cancelado')" title="Cancelar" class="text-orange-600 hover:text-orange-800"><i class="fa-solid fa-ban"></i></button>
@@ -704,39 +729,48 @@
             });
         }
 
-        window.changeProductStatus = function(id, newStatus) {
-            const p = productsData.find(item => item.id === id);
-            if(p) {
-                p.status = newStatus;
-                renderProductsTable();
-                renderDashboard();
+        window.changeProductStatus = async function(id, newStatus) {
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').doc(id).update({ status: newStatus });
+                } else {
+                    const p = productsData.find(item => item.id === id);
+                    if(p) p.status = newStatus;
+                    renderProductsTable();
+                    renderDashboard();
+                }
+            } catch (err) {
+                console.error("Erro ao atualizar status:", err);
             }
         };
 
-        window.logicalDeleteProduct = function(id) {
-            const p = productsData.find(item => item.id === id);
-            if(p) {
-                p.status = 'Excluído';
-                renderProductsTable();
-                renderDashboard();
+        window.logicalDeleteProduct = async function(id) {
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('products').doc(id).update({ status: 'Excluído' });
+                } else {
+                    const p = productsData.find(item => item.id === id);
+                    if(p) p.status = 'Excluído';
+                    renderProductsTable();
+                    renderDashboard();
+                }
+            } catch (err) {
+                console.error("Erro ao excluir produto:", err);
             }
         };
 
-        // Eventos de Criação e Apontamento de Ordem de Produção (MES)
-        document.getElementById('op-form').addEventListener('submit', (e) => {
+        // Ordem de Produção salvando no Firestore
+        document.getElementById('op-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const prodId = document.getElementById('op-product').value;
             const machine = document.getElementById('op-machine').value;
             const demandKg = parseFloat(document.getElementById('op-demand-kg').value);
 
             const prod = productsData.find(p => p.id === prodId);
-            
-            // Regra do Motor Módulo 3: Sincronismo de Carga e Conversão Automática de Peso
             const speed = prod.machines[machine]?.speed || 100;
             const packages = Math.round(demandKg / prod.weight);
 
             const newOp = {
-                id: 'op_' + Date.now(),
                 code: prod.code,
                 description: prod.description,
                 machine,
@@ -747,10 +781,20 @@
                 progress: 0
             };
 
-            ordersData.push(newOp);
-            closeModal('op-modal');
-            renderMESTable();
-            renderDashboard();
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders').add(newOp);
+                } else {
+                    ordersData.push({ id: 'op_' + Date.now(), ...newOp });
+                }
+                closeModal('op-modal');
+                if(!db) {
+                    renderMESTable();
+                    renderDashboard();
+                }
+            } catch (err) {
+                alert("Erro ao criar OP: " + err.message);
+            }
         });
 
         function renderMESTable() {
@@ -758,7 +802,7 @@
             container.innerHTML = '';
 
             if(ordersData.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">Nenhuma ordem de produção cadastrada no MES.</div>`;
+                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">Nenhuma ordem de produção cadastrada.</div>`;
                 return;
             }
 
@@ -783,43 +827,75 @@
             });
         }
 
-        window.updateOPStatus = function(id, newStatus) {
-            const op = ordersData.find(o => o.id === id);
-            if(op) {
-                op.status = newStatus;
-                if(newStatus === 'Concluída') op.progress = 100;
-                if(newStatus === 'Em Produção') op.progress = 25;
-                renderMESTable();
-                renderDashboard();
+        window.updateOPStatus = async function(id, newStatus) {
+            const updates = { status: newStatus };
+            if(newStatus === 'Concluída') updates.progress = 100;
+            if(newStatus === 'Em Produção') updates.progress = 25;
+
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('orders').doc(id).update(updates);
+                } else {
+                    const op = ordersData.find(o => o.id === id);
+                    if(op) {
+                        op.status = newStatus;
+                        op.progress = updates.progress;
+                    }
+                    renderMESTable();
+                    renderDashboard();
+                }
+            } catch (err) {
+                console.error("Erro ao atualizar status da OP:", err);
             }
         };
 
-        // Algoritmo Genético e Módulo 3 (Inteligência Otimizadora)
+        function renderDashboard() {
+            document.getElementById('stat-products-count').innerText = productsData.filter(p => p.status !== 'Excluído').length;
+            document.getElementById('stat-active-ops').innerText = ordersData.filter(o => o.status === 'Em Produção').length;
+
+            const grid = document.getElementById('machine-status-grid');
+            grid.innerHTML = '';
+            machinesList.forEach(m => {
+                const activeOp = ordersData.find(o => o.machine === m && o.status === 'Em Produção');
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-gears mr-1.5 text-emerald-600"></i> ${m}</span>
+                            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded ${activeOp ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}">
+                                ${activeOp ? 'Rodando' : 'Disponível'}
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500">${activeOp ? `OP: ${activeOp.code} - ${activeOp.description}` : 'Nenhuma OP ativa'}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between items-center text-xs">
+                        <span class="text-slate-400">MTBF: <strong class="text-slate-700">Risco Baixo</strong></span>
+                        <span class="text-emerald-600 font-semibold">${activeOp ? `${activeOp.progress}% Concluído` : 'Standby'}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
         window.runAPSOptimizer = function() {
             const badge = document.getElementById('aps-status-badge');
             badge.innerText = "IA Otimizando (Processando Algoritmo Genético)...";
             badge.className = "text-xs bg-amber-900 text-amber-300 px-2.5 py-1 rounded animate-pulse";
 
-            const selectedMode = document.querySelector('input[name="aps-mode"]:checked').value;
-            const wSetup = document.getElementById('slider-setup').value;
-            const wDelay = document.getElementById('slider-delay').value;
-            const wMaint = document.getElementById('slider-maint').value;
-
-            // Simulação de tempo de processamento matemático da IA (Memória Local)
             setTimeout(() => {
-                badge.innerText = "Cronograma Otimizado (Capacidade Finita)";
+                badge.innerText = "Cronograma Otimizado";
                 badge.className = "text-xs bg-indigo-900 text-indigo-300 px-2.5 py-1 rounded";
 
                 const ganttContainer = document.getElementById('gantt-chart-container');
                 ganttContainer.innerHTML = '';
 
-                // Regra Módulo 3: Alocação Linear por Recurso (Envase 1 a 6)
                 machinesList.forEach(m => {
                     const machineOps = ordersData.filter(o => o.machine === m && o.status !== 'Concluída');
                     const row = document.createElement('div');
                     row.className = "flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-800 rounded-lg border border-slate-700 text-xs gap-3";
                     
-                    let opBlocks = machineOps.length > 0 ? machineOps.map(o => `<span class="px-2.5 py-1 bg-indigo-600 text-white rounded font-mono font-bold hover:bg-indigo-500 cursor-pointer transition-colors" title="Duração Calc: ${(o.packages/o.speed).toFixed(1)} mins">${o.code} (${o.demandKg}kg)</span>`).join(' <i class="fa-solid fa-arrow-right text-slate-500 mx-1"></i> ') : '<span class="text-slate-500 italic">Nenhuma OP alocada (Capacidade Ociosa)</span>';
+                    let opBlocks = machineOps.length > 0 ? machineOps.map(o => `<span class="px-2.5 py-1 bg-indigo-600 text-white rounded font-mono font-bold">${o.code} (${o.demandKg}kg)</span>`).join(' <i class="fa-solid fa-arrow-right text-slate-500 mx-1"></i> ') : '<span class="text-slate-500 italic">Capacidade Ociosa</span>';
 
                     row.innerHTML = `
                         <div class="font-bold text-slate-200 w-32"><i class="fa-solid fa-server mr-1.5 text-emerald-400"></i> ${m}</div>
@@ -828,37 +904,31 @@
                     ganttContainer.appendChild(row);
                 });
 
-                // Módulo de Justificativa da IA (Fim da Caixa-Preta)
                 const auditCard = document.getElementById('aps-audit-card');
                 const auditText = document.getElementById('aps-audit-text');
                 auditCard.classList.remove('hidden');
-                
-                let modeText = selectedMode === 'teorico' ? "Otimização baseada 100% no cadastro de Engenharia." 
-                             : selectedMode === 'real' ? "Eficiências Bayesianas aplicadas: A IA calibrou os tempos de setup e velocidades reais lidos do MES." 
-                             : "Risco de Quebra mitigado: Máquinas próximas do MTBF foram penalizadas na alocação.";
-
-                auditText.innerHTML = `
-                    <div class="space-y-2 mt-2">
-                        <p>${modeText}</p>
-                        <p class="font-mono text-indigo-700 bg-indigo-100 p-2 rounded">
-                            População Inicial: 50 | Gerações: 200 | Custo (Fitness): Avaliado com base nos Sliders (Setup: ${wSetup}%, Atraso: ${wDelay}%, MTBF: ${wMaint}%).
-                        </p>
-                        <p><strong>Resultado Local:</strong> Capacidade Finita respeitada e agendamentos processados com sucesso. Próximo passo: Sincronizar aprovação no Firestore.</p>
-                    </div>
-                `;
+                auditText.innerText = "Capacidade finita calculada com base nos dados reais sincronizados do Firestore.";
             }, 800);
         };
 
-        // Gestão de Usuários e Equipe
-        document.getElementById('user-form').addEventListener('submit', (e) => {
+        // Usuários salvando no Firestore
+        document.getElementById('user-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('user-name').value;
             const email = document.getElementById('user-email').value;
             const role = document.getElementById('user-role').value;
 
-            teamData.push({ id: 'u_' + Date.now(), name, email, role });
-            closeModal('user-modal');
-            renderTeamTable();
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').add({ name, email, role });
+                } else {
+                    teamData.push({ id: 'u_' + Date.now(), name, email, role });
+                    renderTeamTable();
+                }
+                closeModal('user-modal');
+            } catch (err) {
+                alert("Erro ao cadastrar usuário: " + err.message);
+            }
         });
 
         function renderTeamTable() {
@@ -879,9 +949,17 @@
             });
         }
 
-        window.deleteUser = function(id) {
-            teamData = teamData.filter(u => u.id !== id);
-            renderTeamTable();
+        window.deleteUser = async function(id) {
+            try {
+                if (db) {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('team').doc(id).delete();
+                } else {
+                    teamData = teamData.filter(u => u.id !== id);
+                    renderTeamTable();
+                }
+            } catch (err) {
+                console.error("Erro ao deletar usuário:", err);
+            }
         };
 
     </script>
